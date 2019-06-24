@@ -1,0 +1,216 @@
+\documentclass{article}
+\usepackage{mathtools}
+\usepackage{qtree}
+\usepackage{hyperref}
+ \usepackage{url}
+\usepackage{amsmath}
+\DeclarePairedDelimiter{\ceil}{\lceil}{\rceil}
+\DeclarePairedDelimiter{\floor}{\lfloor}{\rfloor}
+\usepackage [USenglish]{babel}
+\usepackage{amssymb}
+\usepackage{amsmath} 
+\usepackage{graphicx}
+\graphicspath{ {images/} }
+
+
+
+\usepackage{color}
+
+\definecolor{pblue}{rgb}{0.13,0.13,1}
+\definecolor{pgreen}{rgb}{0,0.5,0}
+\definecolor{pred}{rgb}{0.9,0,0}
+\definecolor{pgrey}{rgb}{0.46,0.45,0.48}
+
+\usepackage{listings}
+\lstset{language=C,
+	showspaces=false,
+	showtabs=false,
+	breaklines=true,
+	showstringspaces=false,
+	breakatwhitespace=true,
+	commentstyle=\color{pgreen},
+	keywordstyle=\color{pblue},
+	stringstyle=\color{pred},
+	basicstyle=\ttfamily,
+	moredelim=[is][\textcolor{pgrey}]{\%\%}{\%\%}
+}
+
+ \title{Homework \#3}
+ \date{\today}
+ \author{Paolo Grignaffini (ID: 800673343)}
+\begin{document}
+	\maketitle
+	
+\section*{Exercise 1}
+\paragraph{}~\\~\\
+$(A \land B) \lor (B \land C)$\\
+\\
+The models that make this sentence true are: 6
+\begin{itemize}
+	\item $A,B,C,D$
+	\item $A,B,C,\lnot D$
+	\item $A,B,\lnot C,D$
+	\item $A,B,\lnot C,\lnot D$
+	\item$\lnot A,B,C,D$
+	\item $\lnot A, B,C, \lnot D$
+\end{itemize}
+
+
+$(A \lor B)$\\
+The models that make this sentence true are: 12
+\begin{itemize}
+\item $\lnot A, B, C, D$
+\item $A, \lnot B, C, D$
+\item $A, B, C, D$
+\item $\lnot A, B, \lnot C, D$
+\item $A, \lnot B, \lnot C, D$
+\item $A, B, \lnot C, D$
+\item $\lnot A, B, C, \lnot D$
+\item $A, \lnot B, C, \lnot D$
+\item $A, B, C, \lnot D$
+\item $\lnot A, B, \lnot C, \lnot D$
+\item $A, \lnot B, \lnot C, \lnot D$
+\item $A, B, \lnot C, \lnot D$
+\end{itemize}
+
+$(A \iff B) \iff C$\\
+The models that make this sentence true are: 8
+\begin{itemize}
+\item $A,B,C,D$
+\item $\lnot A, \lnot B, \lnot C,D$
+\item $A,B,C,\lnot D$
+\item $\lnot A, \lnot B, \lnot C, \lnot D$
+\item $A,\lnot B, \lnot C,D$
+\item $\lnot A, B, \lnot C,D$
+\item $A,\lnot B, \lnot C,\lnot D$
+\item $\lnot A, B, \lnot C,\lnot D$
+\end{itemize}
+
+\section*{Exercise 2}
+\paragraph{}~\\~\\
+$Smoke \implies Smoke$\\
+Possible Interpretations:\\
+$True \implies True$, which is $True$\\
+$False \implies False$, which is $True$\\
+Therefore the formula is valid and satisfiable.\\
+\\
+$(Smoke \implies Fire) \implies (\lnot Smoke \implies \lnot Fire)$\\
+Possible Interpretations:\\
+$(True \implies True) \implies (False \implies False)$, which is $True$\\
+$(True \implies False) \implies (False \implies True)$, which is $True$\\
+$(False \implies True) \implies (True \implies False)$, which is $False$\\
+$(False \implies False) \implies (True \implies True)$, which is $True$\\
+We found an Interpretation that is not a Model of the formula, therefore the formula is satisfiable but not valid.\\
+\\
+$((Smoke \land Heat) \implies Fire) \iff ((Smoke \implies Fire) \lor (Heat \implies Fire))$\\
+Possible Interpretations:\\
+$((True \land True) \implies True) \iff ((True \implies True) \lor (True \implies True))$, which is $True$\\
+$((True \land True) \implies False) \iff ((True \implies False) \lor (True \implies False))$, which is $True$\\
+$((True \land False) \implies True) \iff ((True \implies True) \lor (False \implies True))$, which is $True$\\
+$((True \land False) \implies False) \iff ((True \implies False) \lor (False \implies False))$, which is $True$\\
+$((False \land True) \implies True) \iff ((False \implies True) \lor (True \implies True))$, which is $True$\\
+$((False \land True) \implies False) \iff ((False \implies False) \lor (True \implies False))$, which is $True$\\
+$((False \land False) \implies True) \iff ((False \implies True) \lor (False \implies True))$, which is $True$\\
+$((False \land False) \implies False) \iff ((False \implies False) \lor (False \implies False))$, which is $True$\\
+Therefore the formula is valid and satisfiable.\\
+
+\section*{Exercise 3}
+\paragraph{}~\\~\\
+\begin{equation}
+\begin{aligned}
+&((A \land B) \lor (B \land C)) \implies (D \land E)\\
+&\lnot ((A \land B) \lor (B \land C)) \lor (D \land E)\\
+&(\lnot (A \land B) \land \lnot(B \land C)) \lor (D \land E)\\
+&((\lnot A \lor \lnot B) \land (\lnot B \lor \lnot C)) \lor (D \land E)\\
+&(D \land E) \lor ((\lnot A \lor \lnot B) \land (\lnot B \lor \lnot C))\\
+&(D \lor ((\lnot A \lor \lnot B) \land (\lnot B \lor \lnot C))\land (E \lor ((\lnot A \lor \lnot B) \land (\lnot B \lor \lnot C))\\
+&(\lnot A \lor \lnot B \lor D) \land (\lnot B \lor \lnot C \lor D)\land (\lnot A \lor \lnot B \lor E) \land (\lnot B \lor \lnot C \lor E)
+\end{aligned}
+\end{equation}
+\newpage
+\section*{Exercise 4}
+\paragraph{}~\\~\\
+\begin{equation}
+\begin{aligned}
+&\frac{A,B~~~~~~~~~~A\land B \implies L} {L} \text{\{\}}\\
+& \\
+&\frac{B,L~~~~~~~~~~L\land B \implies M} {M} \text{\{\}}\\
+& \\
+&\frac{L,M~~~~~~~~~~L\land M \implies P} {P} \text{\{\}}\\
+& \\
+&\frac{P~~~~~~~~~~P \implies Q} {Q} \text{\{\}}\\
+& \\
+&Q
+\end{aligned}
+\end{equation}
+
+\section*{Exercise 5}
+\paragraph{}~\\~\\
+The problem can be represented by the following $KB$:\\
+\\
+$\forall x \exists y | \text{marriage}(x,y)$\\
+ $\forall x(\forall y| \text{marriage}(x,y)\land \forall z| \text{marriage}(x,z)) \implies y = z$\\
+$\text{marriage}(x,y) \implies (\text{preference}(x,y) \land \text{preference}(y,x))$\\
+$\text{marriage}(x,y) \implies \text{marriage}(y,x)$\\
+\\
+Where the formula: marriage($x,y$) means that $x$ is married with $y$.\\
+The formula: preference($x,y$) means that $x$ has expressed a preference in order to marry $y$.
+
+\section*{Exercise 6}
+\paragraph{}~\\~\\
+$P(A,B,C), P(x,y,z)$\\
+$P(A,B,C), P(A,B,C)$\\
+\textbf{mgu} = $\{x/A, y/B, z/C\}$\\
+\\
+$Q(y, G(A,B)), Q(G(x,x), y)$\\
+$Q(G(x,x), G(A,B)), Q(G(x,x), G(x,x)~~~~~~~~~\eta = \{y/G(x,x)\}$\\
+$Q(G(A,A), G(A,B)), Q(G(A,A), G(A,A)~~~~~~\eta = \{x/A\}$\\
+\textbf{mgu} doesn't exist.\\
+\\
+$O(F(y), x), O(F(x), J)$\\
+$O(F(x), x), O(F(x), J)~~~~~~\eta = \{y/x\}$\\
+$O(F(J), J), O(F(J), J)~~~~~~\eta = \{x/J\}$\\
+\textbf{mgu} = $\{y/x, x/J\}$\\
+\\
+$K(F(y),y), K(x,x)$\\
+$K(F(y),y), K(F(y),F(y))~~~~~~\eta = \{x/F(y)\}$\\
+\textbf{mgu} doesn't exist.\\
+
+\section*{Exercise 7}
+\paragraph{}~\\~\\
+Horse($x$) $\implies$ Animal($x$)\\
+Cow($x$) $\implies$ Animal($x$)\\
+Pig($x$) $\implies$ Animal($x$)\\
+Horse($x$) $\land$ Offspring($x, y$) $\implies$ Horse($y$)\\
+Horse(Bluebeard)\\
+Parent(Charlie, Bluebeard)\\
+Offspring($x, y$) $\iff$ Parent($y,x$)\\
+Mammal($x$) $\implies$ $\exists y$ Parent($x,y$)\\
+Mammal($x$) $\implies$ Animal($x$)\\
+\\
+``Charlie is an horse and is an offspring of Bluebeard":\\
+\\
+\begin{equation}
+\begin{aligned}
+& \frac{\text{Parent(Charlie, Blue)}, \text{Offspring}(x,y) \iff \text{Parent}(y,x)}{}\\
+& \frac{\text{Parent(Charlie, Blue)}, \text{Offspring(Blue, Charlie)} \iff \text{Parent(Charlie, Blue)}}{ \text{Offspring(Blue, Charlie)}}\eta = \{y/\text{Charlie}, x/\text{Blue}\}\\
+&\\
+&\text{Offspring(Blue, Charlie)} \land \text{Horse(Blue), } \text{Horse}(x) \land \text{Offspring}(x,y) \implies \text{Horse}(y)\\
+&\frac{\text{Offspring(Blue, Charlie)} \land \text{Horse(Blue), } \text{Horse(Blue)} \land \text{Offspring(Blue, Charlie)} \implies \text{Horse(Charlie)}}{\text{Horse(Charlie)}~~~~~~~~~~~\eta = \{y/\text{Charlie}, x/\text{Blue}\}}
+\end{aligned}
+\end{equation}
+\\
+``Is Charlie a cow?":\\
+Since doesn't exist any relation that states that a horse is not a cow and a cow is not a horse we cannot make any assumptions, therefore with the KB that we have we cannot answer that question.
+
+\section*{Exercise 8}
+\paragraph{}~\\~\\
+We can prove that a ground sentence is \textbf{\textit{valid} or \textbf{unsatisfiable}} in the following way:\\
+\begin{itemize}
+	\item Negate the desired conclusion, after converting it into CNF (in our case the ground sentence)
+	\item Apply the resolution rule in order to derive new axioms
+	\subitem If a contradiction is derived then the ground sentence is valid
+	\subitem If we cannot apply the rules anymore and a contradiction has not
+	\subitem been found, then the ground sentence is unsatisfiable
+\end{itemize}
+\end{document}

@@ -1,0 +1,64 @@
+\documentclass{article}
+\usepackage{mathtools}
+\usepackage{qtree}
+\usepackage{hyperref}
+ \usepackage{url}
+\usepackage{amsmath}
+\DeclarePairedDelimiter{\ceil}{\lceil}{\rceil}
+\DeclarePairedDelimiter{\floor}{\lfloor}{\rfloor}
+\usepackage [USenglish]{babel}
+\usepackage{amssymb}
+\usepackage{amsmath} 
+\usepackage{graphicx}
+\graphicspath{ {images/} }
+
+
+
+\usepackage{color}
+
+\definecolor{pblue}{rgb}{0.13,0.13,1}
+\definecolor{pgreen}{rgb}{0,0.5,0}
+\definecolor{pred}{rgb}{0.9,0,0}
+\definecolor{pgrey}{rgb}{0.46,0.45,0.48}
+
+\usepackage{listings}
+\lstset{language=C,
+	showspaces=false,
+	showtabs=false,
+	breaklines=true,
+	showstringspaces=false,
+	breakatwhitespace=true,
+	commentstyle=\color{pgreen},
+	keywordstyle=\color{pblue},
+	stringstyle=\color{pred},
+	basicstyle=\ttfamily,
+	moredelim=[is][\textcolor{pgrey}]{\%\%}{\%\%}
+}
+
+ \title{Homework \#4}
+ \date{\today}
+ \author{Paolo Grignaffini (ID: 800673343)}
+\begin{document}
+	\maketitle
+	
+\section*{Set of states}
+The state are representet through an array of \textbf{char} called \textbf{conf}, that is a member of the \textbf{Node}'s class.\\
+A character equal to \textbf{*} means that the point corresponding to the array's index has not been colored/chosen yet, a character equal to \textbf{A} means that player A has colored the point, the same applies to character \textbf{B}.\\
+Therefore the inital state is represented as an array containing just \textbf{*}.\\
+\textbf{Example of possible states}: if we take into consideration the graph inserted in the programming assignment paper we could have:\\
+\textbf{Initial state:} $<*,*,*,*,*>$\\
+$<A,*,*,*,*>$ $<A,B,*,*,*>$ $<A,B,*,*,A>$...
+
+\section*{Player function}
+In order to determine which player has the turn I use the level of the node inside the tree. If the node has an even level, it means that is a node $A$ so the player who has the turn is $B$, if the node's level is odd it means that is a $B$ node so the player who has the turn is $A$.
+
+\section*{Result function}
+In order to generate the children of a node we need to know who is the player who has the turn and the possible moves that he can make.\\
+If it's $A$ turn to play we know that we need to add character $A$ in the child configuration, this can be done if and only if the place where we want to insert $A$ is occupied by * (the algorithm tries them all) and if and only if there are no edges between the possible new $A$'s place and the other $A$ characters in the configuration. This is done using an adjacent list that memorize for every node its neighbors, and a vector \textbf{AMoves} that contains all the places already occupied by $A$, in this way the result function generates only the node's children that represent a legal configuration. The same applies to $B$.
+
+\section*{Termination test}
+When the result function cannot generate any children for any node in the tree anymore, this means that the game is over, since we have tried all the possible legal configurations. Nodes that do not have children are called leaf and to the is assigned a numeric value by the utility function.
+
+\section*{Utility function}
+The utility function assignes to every leaf a score, if the leaf is an $A$ node then the score is equal to the number of * into the node configuration. if the leaf is a $B$ node then the score is equal to the number of * into the node configuration multiplied by -1. The utility function is called recursively on the root children in order to have a score for every node in the tree, for the nodes who are not leaves the score is determined by picking the max/min of his children.
+\end{document}

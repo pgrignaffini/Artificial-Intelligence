@@ -1,0 +1,111 @@
+In order to complete the program several parts of the original code has been modified, but the used algorithms are the
+same (except for IDE that has been fixed).
+
+::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+The first class that has been added is Parser, which has the task to parse the input file.
+::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+class Parser
+{
+  public:
+  int n;
+  int c;
+  int e;
+  vector<int> adjacent;
+
+  public:
+  Parser(string file);
+
+};
+
+Parser::Parser(string file)
+{
+  int tmp;
+  ifstream infile(file);
+  if(infile.is_open())
+  {
+    infile >> n >> e >> c;
+    while(!infile.eof())
+    {
+      infile >> tmp;
+      tmp = tmp-1;
+      adjacent.push_back(tmp);
+    }
+    adjacent.pop_back(); //duplicate last element
+  }
+  infile.close();
+}
+
+::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+The function check_goal and generate_children has been modified in order to fit with the new representation of the problem.
+::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+int Graph::check_goal(Node n)
+{
+  int size = n.conf.size();
+  int color;
+
+  if(size < n_nodes) return 0;
+  if(size > n_nodes) return 2;
+  for (int i=0; i<n.conf.size(); i++)
+  {
+    color = n.conf[i];
+    if (adj[i].size() != 0) //check if it has neighbors
+    {
+      for (int j=0; j<adj[i].size(); j++)
+      {
+        if (color == n.conf[adj[i][j]]) return 0; //if it has the same color of some of its neighbors it can't be the solution
+      }
+    }
+  }
+  return 1;
+}
+
+void Graph::generate_children(Node n)
+{
+  children.clear();
+  if (n.conf.size() >= n_nodes) return;
+  for (int i=0; i<colors.size(); i++)
+  {
+    Node new_child = n;
+    new_child.level = n.level + 1;
+    new_child.conf.push_back(colors[i]);
+    children.push_back(new_child);
+  }
+}
+
+::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+A new heuristic h1 has been added in order to test A*.
+::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+int Graph::h1(Node n) // calculate the number of constraints
+{
+  int h = 0;
+  int value;
+  int neighbor;
+  int size = n.conf.size();
+  int admissible_values[n_nodes][n_colors];
+
+  for (int i = 0; i<size; i++)
+  {
+    for(int j=0; j<n_colors; j++) admissible_values[i][j] = 0;
+  }
+
+  for (int i = size; i<n_nodes; i++)
+  {
+    for(int j=0; j<n_colors; j++) admissible_values[i][j] = 1;
+  }
+
+  for (int i=0; i<size; i++)
+  {
+    value = n.conf[i]; //gets the color
+    for (int j=0; j<adj[i].size(); j++)
+    {
+      neighbor = adj[i][j];// find the neighbor of the node
+      admissible_values[neighbor][value] = 0;//the neighbor cannot have the same color, so it is set to 0
+    }
+  }
+
+  for (int i=0; i<n_nodes; i++)
+  {
+    for(int j=0; j<n_colors; j++) h += admissible_values[i][j];
+  }
+  return h;
+}

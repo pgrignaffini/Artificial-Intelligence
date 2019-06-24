@@ -1,0 +1,82 @@
+test1.txt:
+Output: Impossible to find a solution.
+The graph can't be colored with only two colors with respect of CSP's rules.
+
+test2.txt:
+BFS:
+Goal reached: 0 1 0 0 1 2 1 0 0 1
+Expanded nodes: 12173
+Frontier size: 24345
+DFS:
+Goal reached: 2 1 2 2 1 0 1 2 2 1
+Expanded nodes: 10499
+Frontier size: 15
+A*:
+Goal reached: 0 1 0 0 1 2 1 0 0 1
+Expanded nodes: 11723
+Frontier size: 12
+IDE:
+Goal reached: 2 1 2 2 1 0 1 2 2 1
+Expanded nodes: 10499
+Frontier size: 14
+
+test3.txt:
+BFS:
+Goal reached: 0 1 0 1 0 0 0 1 0 1
+Expanded nodes: 674
+Frontier size: 674
+DFS:
+Goal reached: 1 0 1 0 1 1 1 0 1 0
+Expanded nodes: 657
+Frontier size: 7
+A*:
+Goal reached: 0 1 0 1 0 0 0 1 0 1
+Expanded nodes: 628
+Frontier size: 10
+IDE:
+Goal reached: 1 0 1 0 1 1 1 0 1 0
+Expanded nodes: 657
+Frontier size: 6
+
+test4.txt
+BFS:
+Goal reached: 0 0 1 1 0 0 1 1 0 0
+Expanded nodes: 614
+Frontier size: 613
+DFS:
+Goal reached: 1 1 0 0 1 1 0 0 1 1
+Expanded nodes: 415
+Frontier size: 7
+A*:
+Goal reached: 0 0 1 1 0 0 1 1 0 0
+Expanded nodes: 1013
+Frontier size: 7
+IDE:
+Goal reached: 1 1 0 0 1 1 0 0 1 1
+Expanded nodes: 415
+Frontier size: 6
+
+test5.txt
+Output: Impossible to find a solution.
+The graph can't be colored with only three colors with respect of CSP's rules.
+
+Observations:
+As expected DFS has been the fastest algorithm in 2 cases out of 3 (tied for IDE).
+The reason of that is pretty simple, since the program has to color all of the nodes before checking for the solution,
+and DFS (and IDE) because of their implementation reach instantly the configuration where all the nodes are colored, they
+don't have to explore all of the "partial solutions" as BFS does, and that implies a faster search.
+BFS instead explores all of the "partial solutions" (a partial solution is a configuration who doesn't have yet all the nodes colored).
+so it is able to check for a valid solution just after exploring all the configurations that come before the n_nodes level,
+this level must contain the solution (if it exists) because it contains all of the possible configurations with which we can color the graph's nodes.
+A different argument has to be given for A*, since its result depends on the graph's structure and not on the visit's order.
+The heuristic used to implement A* calculates the number of constraints that a particular node obtains during the coloring process.
+If a node has some neighbors that have been already colored it means that the considered node cannot be colored with the same color of his neighbors.
+So A* calculates first which color give to the node with the biggest number of active constraints.
+We can notice that during test3 A* got the best results, instead during test4 it got the worst results.
+The reason of that is because, as you can see in the file graphs.pdf, which contains the graphic visualization of the graphs used during the testing,
+the test 3 contains just one node with several constraints (node number 4) instead the remaining ones have at max 2 connections, so once a color is set
+for node number 4 (that is the first node to be colored) becomes really easy to find correct values for the other ones.
+On the other hand test4 contains a graph with several edges coming out from each node (each node has from 3 to 5 edges) and the A* ordering turns out to not be
+really helpful in this case since at the start the value of h is the same for each internal node (1,2,9,10 excluded) and coloring one of them gives all the other internal
+nodes the same h value again, therefore the heuristic utilized turns out to not be very effective in order to understand which node should be colored first, and this
+can be seen in the obtained result. 
